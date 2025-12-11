@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Menu, Search, Calendar, Bell, User, ChevronDown, Settings, LogOut } from "lucide-react"
-import { Input } from "@/components/ui/input"
 
 export function AdminHeader({
   title = "Dashboard",
@@ -49,8 +48,12 @@ export function AdminHeader({
         <div className="flex items-center gap-3">
           {/* Search Bar - Hidden on mobile */}
           <div className="hidden md:flex items-center relative">
-            <Search className="absolute left-3 w-4 h-4 text-gray-400" />
-            <Input type="text" placeholder="Search..." className="pl-9 w-48 lg:w-64 h-9 bg-gray-50 border-gray-200" />
+            <Search className="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="pl-9 w-48 lg:w-64 h-9 bg-gray-50 border border-gray-200 rounded-md px-3 py-1 text-sm outline-none focus:border-[#208C8A] focus:ring-2 focus:ring-[#208C8A]/20 transition-all"
+            />
           </div>
 
           {/* Date Range Selector - Hidden on mobile */}
