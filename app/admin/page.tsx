@@ -1,7 +1,21 @@
 "use client"
 
 import { useState } from "react"
-import { LayoutDashboard, Package, BarChart3, Truck, Settings, LogOut, Search, Bell, User } from "lucide-react"
+import {
+  LayoutDashboard,
+  Package,
+  BarChart3,
+  Truck,
+  Settings,
+  LogOut,
+  Search,
+  Bell,
+  User,
+  DollarSign,
+  TrendingDown,
+  Target,
+  AlertCircle,
+} from "lucide-react"
 
 export default function AdminPage() {
   const [activeMenu, setActiveMenu] = useState("Dashboard")
@@ -20,45 +34,26 @@ export default function AdminPage() {
         </div>
 
         <nav className="flex-1 p-3 space-y-1">
-          <button
-            onClick={() => setActiveMenu("Dashboard")}
-            className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
-              activeMenu === "Dashboard" ? "bg-[#208C8A] text-white" : "text-[#1F2121] hover:bg-gray-100"
-            }`}
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            <span className="font-medium text-sm">Dashboard</span>
-          </button>
-
-          <button
-            onClick={() => setActiveMenu("Inventory")}
-            className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
-              activeMenu === "Inventory" ? "bg-[#208C8A] text-white" : "text-[#1F2121] hover:bg-gray-100"
-            }`}
-          >
-            <Package className="w-5 h-5" />
-            <span className="font-medium text-sm">Inventory</span>
-          </button>
-
-          <button
-            onClick={() => setActiveMenu("Sales Reports")}
-            className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
-              activeMenu === "Sales Reports" ? "bg-[#208C8A] text-white" : "text-[#1F2121] hover:bg-gray-100"
-            }`}
-          >
-            <BarChart3 className="w-5 h-5" />
-            <span className="font-medium text-sm">Sales Reports</span>
-          </button>
-
-          <button
-            onClick={() => setActiveMenu("Vendors")}
-            className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
-              activeMenu === "Vendors" ? "bg-[#208C8A] text-white" : "text-[#1F2121] hover:bg-gray-100"
-            }`}
-          >
-            <Truck className="w-5 h-5" />
-            <span className="font-medium text-sm">Vendors</span>
-          </button>
+          {[
+            { icon: LayoutDashboard, label: "Dashboard" },
+            { icon: Package, label: "Inventory" },
+            { icon: BarChart3, label: "Sales Reports" },
+            { icon: Truck, label: "Vendors" },
+          ].map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.label}
+                onClick={() => setActiveMenu(item.label)}
+                className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
+                  activeMenu === item.label ? "bg-[#208C8A] text-white" : "text-[#1F2121] hover:bg-gray-100"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="font-medium text-sm">{item.label}</span>
+              </button>
+            )
+          })}
 
           <div className="py-2">
             <div className="border-t border-gray-200" />
@@ -132,7 +127,7 @@ export default function AdminPage() {
           </div>
         </header>
 
-        {/* Page Content */}
+        {/* Dashboard Content */}
         <main className="pt-16 p-8">
           <div className="space-y-6">
             <div>
@@ -140,26 +135,68 @@ export default function AdminPage() {
               <p className="text-gray-600">Manage your pharmacy operations efficiently</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-[#208C8A] to-[#1a6f6d] p-6 rounded-lg shadow-sm text-white">
-                <h2 className="text-lg font-semibold mb-2">Total Sales</h2>
-                <p className="text-3xl font-bold">₹45,230</p>
-                <p className="text-sm opacity-90 mt-1">+12% from last month</p>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-gradient-to-br from-[#208C8A] to-[#1a6f6d] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-[#1a6f6d]">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 bg-white/20 rounded-lg">
+                    <DollarSign className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-sm font-medium text-white/90 mb-2">Total Revenue (Today)</h3>
+                <p className="text-[28px] font-bold text-white mb-1">Rs. 5,200</p>
+                <p className="text-xs text-white/80 flex items-center gap-1">
+                  <span className="text-green-300">↑ 12%</span>
+                  <span>from yesterday</span>
+                </p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h2 className="text-lg font-semibold text-[#1F2121] mb-2">Inventory Items</h2>
-                <p className="text-3xl font-bold text-[#208C8A]">1,234</p>
-                <p className="text-sm text-gray-600 mt-1">5 items low stock</p>
+              <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 bg-white/20 rounded-lg">
+                    <TrendingDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-sm font-medium text-white/90 mb-2">Total Expenses (Today)</h3>
+                <p className="text-[28px] font-bold text-white mb-1">Rs. 1,800</p>
+                <p className="text-xs text-white/80 flex items-center gap-1">
+                  <span className="text-green-300">↓ 5%</span>
+                  <span>from yesterday</span>
+                </p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h2 className="text-lg font-semibold text-[#1F2121] mb-2">Today Orders</h2>
-                <p className="text-3xl font-bold text-[#208C8A]">87</p>
-                <p className="text-sm text-gray-600 mt-1">23 pending</p>
+              <div className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 bg-white/20 rounded-lg">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-sm font-medium text-white/90 mb-2">Profit Margin</h3>
+                <p className="text-[28px] font-bold text-white mb-1">65.4%</p>
+                <p className="text-xs text-white/80 flex items-center gap-1">
+                  <span className="text-green-200">↑ 8%</span>
+                  <span>from yesterday</span>
+                </p>
+              </div>
+
+              <div
+                onClick={() => setActiveMenu("Inventory")}
+                className="bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 bg-white/20 rounded-lg">
+                    <AlertCircle className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-sm font-medium text-white/90 mb-2">Low Stock Items</h3>
+                <p className="text-[28px] font-bold text-white mb-1">12 items</p>
+                <p className="text-xs text-white/80 flex items-center gap-1">
+                  <span>⚠️ Needs attention</span>
+                </p>
               </div>
             </div>
 
+            {/* Recent Activity */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h2 className="text-lg font-semibold text-[#1F2121] mb-4">Recent Activity</h2>
               <div className="space-y-3">
