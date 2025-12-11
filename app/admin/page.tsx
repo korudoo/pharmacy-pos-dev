@@ -78,7 +78,7 @@ export default function AdminPage() {
         <div className="p-3 border-t border-gray-200">
           <div className="flex items-center gap-3 px-3 py-3">
             <div className="w-8 h-8 bg-[#208C8A] rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
+              <User className="w-4 h-4 text-white" />
             </div>
             <div>
               <p className="text-sm font-semibold text-[#1F2121]">Admin User</p>
@@ -196,23 +196,12 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Recent Activity */}
+            {/* Placeholder for components - will add back one by one */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <h2 className="text-lg font-semibold text-[#1F2121] mb-4">Recent Activity</h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">New order #12345 received</span>
-                  <span className="text-xs text-gray-400">2 mins ago</span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">Inventory updated: Paracetamol 500mg</span>
-                  <span className="text-xs text-gray-400">15 mins ago</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-gray-600">Payment received from Order #12340</span>
-                  <span className="text-xs text-gray-400">1 hour ago</span>
-                </div>
-              </div>
+              <h2 className="text-lg font-semibold text-[#1F2121] mb-4">Dashboard Content</h2>
+              <p className="text-gray-600">
+                Testing minimal admin page - if this loads without errors, we can add components back one by one.
+              </p>
             </div>
           </div>
         </main>
