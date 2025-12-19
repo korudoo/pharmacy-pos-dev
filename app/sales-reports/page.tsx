@@ -1,3 +1,5 @@
+"use client"
+
 import SalesReports from "@/components/sales-reports"
 
 export default function SalesReportsPage() {
