@@ -16,9 +16,6 @@ import {
   Target,
   AlertCircle,
 } from "lucide-react"
-import SalesTrendChart from "@/components/sales-trend-chart"
-import AIInsights from "@/components/ai-insights"
-import ProductsExpirySection from "@/components/products-expiry-section"
 
 export default function AdminPage() {
   const [activeMenu, setActiveMenu] = useState("Dashboard")
@@ -199,35 +196,12 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Sales Trend Chart */}
-            <SalesTrendChart onFilterChange={(filter) => console.log("Filter changed to:", filter)} />
-
-            {/* AI Insights section */}
-            <AIInsights onAction={(id, action) => console.log("Insight action:", id, action)} />
-
-            {/* Products and Expiry Section */}
-            <ProductsExpirySection
-              onViewDetails={(productName) => console.log("View details:", productName)}
-              onApplyDiscount={(alertId) => console.log("Apply discount to alert:", alertId)}
-            />
-
-            {/* Recent Activity */}
+            {/* Placeholder for components - will add back one by one */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <h2 className="text-lg font-semibold text-[#1F2121] mb-4">Recent Activity</h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">New order #12345 received</span>
-                  <span className="text-xs text-gray-400">2 mins ago</span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">Inventory updated: Paracetamol 500mg</span>
-                  <span className="text-xs text-gray-400">15 mins ago</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-gray-600">Payment received from Order #12340</span>
-                  <span className="text-xs text-gray-400">1 hour ago</span>
-                </div>
-              </div>
+              <h2 className="text-lg font-semibold text-[#1F2121] mb-4">Dashboard Content</h2>
+              <p className="text-gray-600">
+                Testing minimal admin page - if this loads without errors, we can add components back one by one.
+              </p>
             </div>
           </div>
         </main>
