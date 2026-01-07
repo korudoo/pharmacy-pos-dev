@@ -1,4 +1,52 @@
+"use client"
+
+import { useState, FormEvent } from "react"
+import { useRouter } from "next/navigation"
+
 export default function LoginPage() {
+  const [error, setError] = useState<string>("")
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError("")
+    setIsLoading(true)
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || "Login failed")
+        setIsLoading(false)
+        return
+      }
+
+      // Save JWT token to localStorage
+      if (data.token) {
+        localStorage.setItem("token", data.token)
+      }
+
+      // Redirect to dashboard
+      router.push("/dashboard")
+    } catch (err) {
+      setError("An error occurred. Please try again.")
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="flex min-h-screen">
       {/* Left side - Dark navy background with branding */}
@@ -48,7 +96,13 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <h2 className="text-4xl font-semibold text-[#1a1a2e] mb-12">Sign in to your account</h2>
 
-          <form className="bg-[#c8c8d4] rounded-2xl p-8 space-y-6">
+          <form onSubmit={handleSubmit} className="bg-[#c8c8d4] rounded-2xl p-8 space-y-6">
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                {error}
+              </div>
+            )}
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-[#1a1a2e] mb-2">
                 Email
@@ -56,8 +110,10 @@ export default function LoginPage() {
               <input
                 type="email"
                 id="email"
-                defaultValue="pietro.schirano@gmail.com"
+                name="email"
+                defaultValue=""
                 className="w-full px-4 py-3 bg-white rounded-lg text-[#1a1a2e] focus:outline-none focus:ring-2 focus:ring-[#b794f6]"
+                required
               />
             </div>
 
@@ -68,17 +124,20 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="password"
-                defaultValue="password123"
+                name="password"
+                defaultValue=""
                 className="w-full px-4 py-3 bg-white rounded-lg text-[#1a1a2e] focus:outline-none focus:ring-2 focus:ring-[#b794f6]"
+                required
               />
             </div>
 
             <div className="flex justify-center pt-4">
               <button
                 type="submit"
-                className="px-12 py-3 bg-[#1a1a2e] text-white rounded-lg font-medium hover:bg-[#2a2a3e] transition-colors"
+                disabled={isLoading}
+                className="px-12 py-3 bg-[#1a1a2e] text-white rounded-lg font-medium hover:bg-[#2a2a3e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </button>
             </div>
           </form>
