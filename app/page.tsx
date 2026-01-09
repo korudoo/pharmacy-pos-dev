@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, FormEvent } from "react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 export default function LoginPage() {
@@ -18,28 +19,19 @@ export default function LoginPage() {
     const password = formData.get("password") as string
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || "Login failed")
+      if (!result?.ok) {
+        setError(result?.error || "Login failed")
         setIsLoading(false)
         return
       }
 
-      // Save JWT token to localStorage
-      if (data.token) {
-        localStorage.setItem("token", data.token)
-      }
-
-      // Redirect to dashboard
+      // Redirect to dashboard on successful login
       router.push("/dashboard")
     } catch (err) {
       setError("An error occurred. Please try again.")
