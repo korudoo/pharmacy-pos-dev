@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
 import {
   DollarSign,
   ShoppingCart,
@@ -12,6 +13,7 @@ import {
   Wifi,
   WifiOff,
   Clock,
+  User,
 } from "lucide-react"
 
 interface CashierDashboardProps {
@@ -35,6 +37,7 @@ export default function CashierDashboard({
   onViewMySales,
   onLogout,
 }: CashierDashboardProps) {
+  const { data: session } = useSession()
   const [quickSearchQuery, setQuickSearchQuery] = useState("")
   const [quickSearchResult, setQuickSearchResult] = useState<string | null>(null)
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -89,6 +92,12 @@ export default function CashierDashboard({
           <p className="text-sm text-gray-600 mt-1">{formatDate(currentTime)}</p>
         </div>
         <div className="flex items-center gap-4">
+          {/* User Info */}
+          <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-3 shadow-sm">
+            <User className="h-5 w-5 text-[#208C8A]" />
+            <span className="text-sm font-medium text-[#1F2121]">{session?.user?.name || "Cashier"}</span>
+          </div>
+
           {/* Time Display */}
           <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-3 shadow-sm">
             <Clock className="h-5 w-5 text-[#208C8A]" />
