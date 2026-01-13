@@ -1,13 +1,35 @@
 "use client"
 
-import { useState, FormEvent } from "react"
-import { signIn } from "next-auth/react"
+import { useState, FormEvent, useEffect } from "react"
+import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { getSession } from "next-auth/react"
 
 export default function LoginPage() {
+  const { data: session, status } = useSession()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  // Redirect already authenticated users to their dashboard
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role) {
+      if (session.user.role === "admin") {
+        router.push("/dashboard")
+      } else if (session.user.role === "cashier") {
+        router.push("/cashier")
+      }
+    }
+  }, [status, session, router])
+
+  // Show loading state while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#d4d4dc]">
+        <p className="text-gray-600">Checking authentication...</p>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -31,8 +53,24 @@ export default function LoginPage() {
         return
       }
 
-      // Redirect to dashboard on successful login
-      router.push("/dashboard")
+      // Fetch the session to get the user's role
+      const session = await getSession()
+
+      if (!session?.user?.role) {
+        setError("Failed to get user role")
+        setIsLoading(false)
+        return
+      }
+
+      // Redirect based on role
+      if (session.user.role === "admin") {
+        router.push("/dashboard")
+      } else if (session.user.role === "cashier") {
+        router.push("/cashier")
+      } else {
+        setError("Unknown role")
+        setIsLoading(false)
+      }
     } catch (err) {
       setError("An error occurred. Please try again.")
       setIsLoading(false)

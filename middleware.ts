@@ -6,16 +6,6 @@ export const middleware = withAuth(
     const token = request.nextauth.token
     console.log("Middleware token:", token)
 
-    // Redirect authenticated users away from sign-in page
-    if (request.nextUrl.pathname === "/" && token) {
-      if (token.role === "admin") {
-        return NextResponse.redirect(new URL("/dashboard", request.url))
-      }
-      if (token.role === "cashier") {
-        return NextResponse.redirect(new URL("/cashier", request.url))
-      }
-    }
-
     // Role-based protection for admin routes
     if (request.nextUrl.pathname.startsWith("/admin")) {
       if (token?.role !== "admin") {
@@ -57,5 +47,5 @@ export const middleware = withAuth(
 )
 
 export const config = {
-  matcher: ["/", "/dashboard/:path*", "/admin/:path*", "/cashier/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/cashier/:path*"],
 }
